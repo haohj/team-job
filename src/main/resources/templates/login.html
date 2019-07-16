@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>欢迎登录</title>
+</head>
+<body>
+<h2>标准登录页</h2>
+<form action="/authentication/form" method="post">
+    <table>
+        <tr>
+            <td>用户名：</td>
+            <td><label>
+                <input name="username" type="text">
+            </label></td>
+        </tr>
+        <tr>
+            <td>密 码：</td>
+            <td><label>
+                <input name="password" type="password">
+            </label></td>
+        </tr>
+        <tr>
+            <td>图形验证码：</td>
+            <td>
+                <label>
+                    <input name="imageCode" type="text">
+                </label>
+                <img src="/code/image?width=90&height=30" alt="">
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2"><input name="remember-me" type="checkbox" value="true">记住我</td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <button type="submit">登录</button>
+            </td>
+        </tr>
+
+    </table>
+</form>
+<h2>手机号登录页</h2>
+<form action="/authentication/mobile" method="post">
+    <table>
+        <tr>
+            <td>手机号：</td>
+            <td><label>
+                <input name="mobile" type="text" value="15912345678">
+            </label></td>
+        </tr>
+        <tr>
+            <td>短信验证码：</td>
+            <td>
+                <label>
+                    <input name="smsCode" type="text">
+                </label>
+                <input type="button" value="发送" onclick="sendSmsCode()">
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <button type="submit">登录</button>
+            </td>
+        </tr>
+
+    </table>
+</form>
+</body>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+    <!-- 发送验证码 -->
+    function sendSmsCode() {
+        $.get(
+            "/code/sms",
+            {"mobile": $("input[name='mobile']").val()}
+        );
+    }
+</script>
+</html>
