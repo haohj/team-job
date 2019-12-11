@@ -1,7 +1,7 @@
 package com.hao.teamjob.dto;
 
-import com.desperado.teamjob.domain.User;
-import com.desperado.teamjob.enums.RepositoryType;
+import com.hao.teamjob.domain.User;
+import com.hao.teamjob.enums.RepositoryType;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 

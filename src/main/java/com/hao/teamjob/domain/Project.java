@@ -1,6 +1,6 @@
 package com.hao.teamjob.domain;
 
-import com.desperado.teamjob.enums.RepositoryType;
+import com.hao.teamjob.enums.RepositoryType;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.util.StringUtils;

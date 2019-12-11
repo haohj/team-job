@@ -1,6 +1,6 @@
 package com.hao.teamjob.utils;
 
-import com.desperado.teamjob.domain.User;
+import com.hao.teamjob.domain.User;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
