@@ -3,6 +3,10 @@ package com.hao.teamjob;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
+/**
+ * @author haohj
+ * @date 2019-12-11 14:16
+ */
 public class SpringBootStartApplication extends SpringBootServletInitializer {
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {

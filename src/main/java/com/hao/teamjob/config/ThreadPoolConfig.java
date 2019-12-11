@@ -2,7 +2,7 @@ package com.hao.teamjob.config;
 
 /**
  * @author haohj
- * @date 2019-12-11 10:24
+ * @date 2019-12-11 14:44
  */
 public class ThreadPoolConfig {
 }

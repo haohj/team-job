@@ -2,79 +2,153 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>欢迎登录</title>
+    <title>登录</title>
+    <link rel="stylesheet" href="./global/element/lib/theme-chalk/index.css">
+    <style>
+        html,body{
+            height: 100%;
+            width: 100%;
+            margin: 0;
+        }
+        [v-cloak] {
+            display: none; }
+    </style>
 </head>
 <body>
-<h2>标准登录页</h2>
-<form action="/authentication/form" method="post">
-    <table>
-        <tr>
-            <td>用户名：</td>
-            <td><label>
-                <input name="username" type="text">
-            </label></td>
-        </tr>
-        <tr>
-            <td>密 码：</td>
-            <td><label>
-                <input name="password" type="password">
-            </label></td>
-        </tr>
-        <tr>
-            <td>图形验证码：</td>
-            <td>
-                <label>
-                    <input name="imageCode" type="text">
-                </label>
-                <img src="/code/image?width=90&height=30" alt="">
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2"><input name="remember-me" type="checkbox" value="true">记住我</td>
-        </tr>
-        <tr>
-            <td colspan="2">
-                <button type="submit">登录</button>
-            </td>
-        </tr>
+<el-container id="app" style="height: 100%;text-align: center;width: 100%" v-cloak>
+            <el-main style="width: 400px;padding-top: 112px">
+                <div style="padding: 10px 37%">
+                    <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+                        <el-form-item>
+                            <img src="./global/image/default.jpg" style="width: 50px;">
+                            <h1 style="color: black;margin: 0;font-size: 40px;font-family: monospace">Bai Cai</h1>
+                        </el-form-item>
+                        <el-form-item prop="username">
+                            <el-input
+                                    style="width: 320px"
+                                    placeholder="请输入邮箱"
+                                    v-model="form.username">
+                                <i slot="prefix" class="el-input__icon el-icon-search"></i>
+                            </el-input>
+                        </el-form-item>
+                        <el-form-item prop="password">
+                            <el-input
+                                    style="width: 320px"
+                                    placeholder="请输入密码"
+                                    type="password"
+                                    v-model="form.password">
+                                <i slot="prefix" class="el-input__icon el-icon-search"></i>
+                            </el-input>
+                        </el-form-item>
 
-    </table>
-</form>
-<h2>手机号登录页</h2>
-<form action="/authentication/mobile" method="post">
-    <table>
-        <tr>
-            <td>手机号：</td>
-            <td><label>
-                <input name="mobile" type="text" value="15912345678">
-            </label></td>
-        </tr>
-        <tr>
-            <td>短信验证码：</td>
-            <td>
-                <label>
-                    <input name="smsCode" type="text">
-                </label>
-                <input type="button" value="发送" onclick="sendSmsCode()">
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2">
-                <button type="submit">登录</button>
-            </td>
-        </tr>
+                        <el-form-item size="large">
+                            <el-button type="primary" @click="submitForm('form')" style="width: 320px">登录</el-button>
+                        </el-form-item>
+                    </el-form>
+                </div>
 
-    </table>
-</form>
-</body>
-<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+            </el-main>
+
+</el-container>
+
+<script src="./global/vue/vue.js"></script>
+<script src="./global/element/lib/index.js"></script>
+<script src="./global/axios/axios.min.js"></script>
 <script>
-    <!-- 发送验证码 -->
-    function sendSmsCode() {
-        $.get(
-            "/code/sms",
-            {"mobile": $("input[name='mobile']").val()}
-        );
-    }
+    new Vue({
+        el: '#app',
+        data: {
+            form: {
+                username: '',
+                password: '',
+            },
+            rules: {
+                username: [
+                    {type:'email',required: true, message: '请输入正确的邮箱', trigger: 'blur'},
+                ],
+                password: [
+                    {required: true, message: '请输入密码', trigger: 'blur'},
+                ],
+            }
+        },
+        methods: {
+            submitForm(formName) {
+                let _this = this;
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+                        axios.defaults.headers.post['Browser-Type'] = _this.myBrowser();
+                        let params = new URLSearchParams();
+                        params.append('username', _this.form.username);       //你要传给后台的参数值 key/value
+                        params.append('password', _this.form.password);
+                        axios({
+                            method: 'post',
+                            url: 'login',
+                            data:params
+                        }).then(function (result) {
+                            if (result.data == 'success'){
+                                window.location.href="index";
+                            }else{
+                                _this.$message({
+                                    message:'用户名或密码错误',
+                                    type:'error'
+                                });
+                            }
+                        })
+                    } else {
+                        console.log('error submit!!');
+                        return false;
+                    }
+                });
+            },
+            myBrowser() {
+                var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串
+                var isOpera = userAgent.indexOf("Opera") > -1; //判断是否Opera浏览器
+                var isIE = userAgent.indexOf("compatible") > -1
+                    && userAgent.indexOf("MSIE") > -1 && !isOpera; //判断是否IE浏览器
+                var isEdge = userAgent.indexOf("Edge") > -1; //判断是否IE的Edge浏览器
+                var isFF = userAgent.indexOf("Firefox") > -1; //判断是否Firefox浏览器
+                var isSafari = userAgent.indexOf("Safari") > -1
+                    && userAgent.indexOf("Chrome") == -1; //判断是否Safari浏览器
+                var isChrome = userAgent.indexOf("Chrome") > -1
+                    && userAgent.indexOf("Safari") > -1; //判断Chrome浏览器
+                if (isIE) {
+                    var reIE = new RegExp("MSIE (\\d+\\.\\d+);");
+                    reIE.test(userAgent);
+                    var fIEVersion = parseFloat(RegExp["$1"]);
+                    if (fIEVersion == 7) {
+                        return "IE7";
+                    } else if (fIEVersion == 8) {
+                        return "IE8";
+                    } else if (fIEVersion == 9) {
+                        return "IE9";
+                    } else if (fIEVersion == 10) {
+                        return "IE10";
+                    } else if (fIEVersion == 11) {
+                        return "IE11";
+                    } else {
+                        return "0";
+                    }//IE版本过低
+                    return "IE";
+                }
+                if (isOpera) {
+                    return "Opera";
+                }
+                if (isEdge) {
+                    return "Edge";
+                }
+                if (isFF) {
+                    return "FF";
+                }
+                if (isSafari) {
+                    return "Safari";
+                }
+                if (isChrome) {
+                    return "Chrome";
+                }
+            }
+        }
+    })
 </script>
+</body>
 </html>
