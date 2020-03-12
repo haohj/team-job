@@ -1,10 +1,12 @@
 package com.hao.teamjob.dao;
 
 import com.hao.teamjob.domain.Project;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
+@Mapper
 public interface ProjectDao {
     void addProject(Project project);
 
